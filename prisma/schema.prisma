@@ -65,3 +65,18 @@ model Session {
   @@index([expiresAt])
   @@map("sessions")
 }
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  action         String
+  userId         String?  @db.Uuid
+  organizationId String?  @db.Uuid
+  ip             String?
+  emailHash      String?
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([action, emailHash, createdAt])
+  @@index([action, ip, createdAt])
+  @@index([organizationId, createdAt])
+  @@map("audit_logs")
+}
